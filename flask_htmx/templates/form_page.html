@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>表单验证示例</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* 添加加载指示器样式 */
+      .htmx-indicator {
+        display: none;
+        color: #0d6efd;
+        font-size: 1.2rem;
+        margin-left: 10px;
+      }
+      .htmx-request .htmx-indicator {
+        display: inline-block;
+      }
+      .htmx-request.form-control {
+        background-image: none !important; /* 覆盖默认加载动画 */
+      }
+    </style>
+
+    <!-- 添加Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1>用户注册</h1>
+      <form hx-post="/submit" >
+        <!-- 用户名输入 -->
+        <div class="mb-3">
+          <label class="form-label">用户名</label>
+          <input
+            type="text"
+            class="form-control"
+            name="username"
+            hx-post="/form/validate/username"
+            hx-trigger="input changed delay:500ms"
+            hx-target="#username-error"
+          ></input>
+          <div id="username-error" class="validation-message"></div>
+        </div>
+        <!-- 邮箱输入 -->
+        <div class="mb-3">
+          <label class="form-label">电子邮箱</label>
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            hx-post="/form/validate/email"
+            hx-trigger="input changed delay:500ms"
+            hx-target="#email-error"
+            scoll="top"
+          ></input>
+          <div id="email-error" class="validation-message"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">提交</button>
+      </form>
+    </div>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+  </body>
+</html>
