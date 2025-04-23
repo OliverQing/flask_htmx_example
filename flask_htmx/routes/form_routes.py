@@ -1,23 +1,25 @@
 from flask import Blueprint, render_template, request
-from validators import validator
+from flask_htmx.validators import validator
 from markupsafe import Markup 
 
-form_bp = Blueprint('form', __name__, template_folder='../templates')
+form_bp = Blueprint('form', __name__, url_prefix='/form')
 
-@form_bp.route("/form/validate/<field_name>", methods=["POST"])
-def validate_field(field_name):
-    value = request.form.get(field_name, "")
-    result = validator.validate(field_name, value)
-    
-    if result["valid"]:
-        return Markup("<span class='text-success' data-valid='true'>✓ 有效</span>")
+@form_bp.route("/validate/<func_name>", methods=["POST"])
+def validate_field(func_name):
+    k,v = list(request.form.items())[0]
+    validation_result = validator.validate(func_name, v)
+    if validation_result["valid"]:
+        # 验证通过，返回成功提示
+        # response_html = f'<div class="text-green-500">√ Valid</div>'
+        response_html = f'<div id="{k}-error" aria-valid="true"><div class="text-green-500">√ Valid</div></div>'
+
     else:
-        return Markup(f"<span class='text-danger' data-valid='false'>{result['message']}</span>")
+        # 验证失败，返回错误提示
+        response_html = f'<div id="{k}-error" aria-valid="false"><div class="text-red-500">{validation_result["message"]}</div></div>'
+
+    return response_html
 
 @form_bp.route("/")
 def form():
-    return render_template('form_page.html')
+    return render_template('base.html')
 
-@form_bp.route("/submit", methods=["POST"])
-def handle_submit():
-    return render_template("success.html")

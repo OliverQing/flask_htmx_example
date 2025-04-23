@@ -5,9 +5,9 @@ class Validator:
     def __init__(self):
         self.validators = {}
 
-    def register(self, field_name):
+    def register(self):
         def decorator(func):
-            self.validators[field_name] = func
+            self.validators[func.__name__] = func  
             return func
         return decorator
 
@@ -21,20 +21,19 @@ validator = Validator()
 
 # 验证器注册
 # 示例验证规则注册
-@validator.register("username")
+@validator.register()
 def validate_username(value):
-    time.sleep(5)
     if len(value) < 4:
         return {"valid": False, "message": "Username must be at least 4 characters"}
-    return {"valid": True}
+    return {"valid": True, "message": ""}
 
-@validator.register("email")
+@validator.register()
 def validate_email(value):
     if "@" not in value:
         return {"valid": False, "message": "Invalid email format"}
     return {"valid": True}
 
-@validator.register("password")
+@validator.register()
 def validate_password(value):
     if len(value) < 8:
         return {"valid": False, "message": "Password must be at least 8 characters"}

@@ -33,3 +33,47 @@
     margin: 0 auto;
     padding: 20px;
 }
+
+.text-red-500{
+    color: red;
+    font-weight: 500;
+}
+
+
+.text-green-500{
+    color: green;
+    font-weight: 500;
+}
+
+#links{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 300px;
+    height: 200px;
+}
+
+#form_div{
+    width: 800px;
+    height: 200px;
+}
+
+.link{
+    cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  #main-content {
+    flex: 1;
+  }
+  footer {
+    background-color: rgba(0, 0, 0, 0.05);
+    text-align: center;
+    padding: 0rem;
+  }

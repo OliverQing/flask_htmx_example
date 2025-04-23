@@ -1,0 +1,42 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Celery Worker",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "celery",
+            "args": [
+                "-A", "flask_htmx.tasks",
+                "worker",
+                // "-Q", "^.*",  // match all queues
+                "--pool=solo",
+                "--loglevel=info"
+            ],
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false  // 新增调试器配置
+        },
+        {
+            "name": "Flask Application",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "args": ["run"],
+            "env": {
+                "FLASK_APP": "flask_htmx/main.py",
+                "FLASK_DEBUG": "1",
+                "PYTHONPATH": "${workspaceFolder}"
+            }
+        }
+    ],
+    "compounds": [  // 替代旧版compound配置
+        {
+            "name": "Full Debug",
+            "configurations": ["Flask Application", "Celery Worker"],
+            "preLaunchTask": "${defaultBuildTask}"
+        }
+    ]
+}
